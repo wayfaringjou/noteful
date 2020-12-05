@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import dummyStore from './dummy-store';
 import NoteItem from './NoteItem';
 
-export default function NoteContents({ noteId, onDelNote }) {
+export default function NoteContents({ noteId }) {
   const { notes } = dummyStore;
   const note = notes.find((n) => n.id === noteId);
   return (
@@ -12,7 +12,6 @@ export default function NoteContents({ noteId, onDelNote }) {
       <section className="note__header">
         <NoteItem
           note={note}
-          onDelNote={(itemNoteId) => { onDelNote(itemNoteId); }}
         />
       </section>
       <section className="note__content">
@@ -27,5 +26,4 @@ export default function NoteContents({ noteId, onDelNote }) {
 
 NoteContents.propTypes = {
   noteId: PropTypes.string.isRequired,
-  onDelNote: PropTypes.func.isRequired,
 };

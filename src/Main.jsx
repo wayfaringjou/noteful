@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import NoteList from './NoteList';
 import AddNoteButton from './AddNoteButton';
 
-export default function Main({ notes, onAddNote, onDelNote }) {
+export default function Main({ notes, onAddNote }) {
   return (
     <section className="main__notes_list">
-      <NoteList notes={notes} onDelNote={(noteId) => onDelNote(noteId)} />
+      <NoteList notes={notes} />
       <section className="main__add_note">
         <AddNoteButton onAddNote={onAddNote} />
       </section>
@@ -17,7 +17,6 @@ export default function Main({ notes, onAddNote, onDelNote }) {
 Main.propTypes = {
   notes: PropTypes.arrayOf(PropTypes.object),
   onAddNote: PropTypes.func.isRequired,
-  onDelNote: PropTypes.func.isRequired,
 };
 
 Main.defaultProps = {
