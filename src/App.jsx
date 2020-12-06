@@ -1,30 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route } from 'react-router-dom';
+import config from './config';
 import Header from './Header';
-import Main from './Main';
-import Sidebar from './Sidebar';
-import NoteContents from './NoteContents';
-// import dummyStore from './dummy-store';
-import NoteSidebar from './NoteSidebar';
+import Main from './Main/Main';
+import Sidebar from './Sidebar/Sidebar';
 import AppContext from './AppContext';
 
 function App() {
   const [folders, setFolders] = useState([]);
   const [notes, setNotes] = useState([]);
   const [errorMsg, setErrorMsg] = useState('');
-  // eslint-disable-next-line no-unused-vars
   const [page, setPage] = useState(1);
 
-  const addFolder = (folder) => {
-    folders.push(folder);
-  };
+  // const addFolder = (folder) => {
+  //  folders.push(folder);
+  // };
 
-  const addNote = (note) => {
-    notes.push(note);
-  };
+  // const addNote = (note) => {
+  //  notes.push(note);
+  // };
 
   const delNote = (noteId) => {
-    fetch(`http://localhost:9090/notes/${noteId}`, {
+    fetch(`${config.API_ENDPOINT}/notes/${noteId}`, {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json',
@@ -50,86 +47,46 @@ function App() {
   };
 
   useEffect(() => {
-    fetchData('http://localhost:9090/folders', { method: 'GET' }, setFolders);
-    fetchData('http://localhost:9090/notes', { method: 'GET' }, setNotes);
+    fetchData(`${config.API_ENDPOINT}/folders`, { method: 'GET' }, setFolders);
+    fetchData(`${config.API_ENDPOINT}/notes`, { method: 'GET' }, setNotes);
   }, [page]);
+
+  const sidebarRoutes = () => (
+    <>
+      <Route exact path="/" component={Sidebar} />
+      <Route exact path="/note/:noteId" component={Sidebar} />
+      <Route exact path="/folder/:folderId" component={Sidebar} />
+    </>
+  );
+
+  const mainRoutes = () => (
+    <>
+      <Route exact path="/" component={Main} />
+      <Route exact path="/note/:noteId" component={Main} />
+      <Route exact path="/folder/:folderId" component={Main} />
+    </>
+  );
 
   return (
     <AppContext.Provider
-      value={{ onDelNote: delNote }}
+      value={{
+        onDelNote: delNote,
+        notes,
+        folders,
+      }}
     >
       <div className="noteful__app">
         <header className="app__header">
           <Header />
         </header>
         <nav className="app__sidebar">
-          <Switch>
-            <Route
-              exact
-              path="/"
-              render={() => (
-                <Sidebar
-                  folders={folders}
-                  onAddFolder={(folder) => setFolders(addFolder(folder))}
-                />
-              )}
-            />
-            <Route
-              path="/note/:noteId"
-              render={({ history, match }) => (
-                <NoteSidebar
-                  noteId={match.params.noteId}
-                  onClickBack={() => history.push('/')}
-                />
-              )}
-            />
-            <Route
-              path="/folder/:folderId"
-              render={({ match }) => (
-                <Sidebar
-                  folders={folders}
-                  onAddFolder={(folder) => setFolders(addFolder(folder))}
-                  selected={match.params.folderId}
-                />
-              )}
-            />
-          </Switch>
+          {sidebarRoutes()}
         </nav>
         <main className="app__main">
           <section className="error_msg">
             <h2>{errorMsg}</h2>
           </section>
-          <Switch>
-            <Route
-              exact
-              path="/"
-              render={() => (
-                <Main
-                  notes={notes}
-                  onAddNote={(note) => setNotes(addNote(note))}
-                />
-              )}
-            />
-            <Route
-              path="/note/:noteId"
-              render={({ match }) => (
-                <NoteContents
-                // notes={notes}
-                  noteId={match.params.noteId}
-                />
-              )}
-            />
-            <Route
-              path="/folder/:folderId"
-              render={({ match }) => (
-                <Main
-                  notes={notes
-                    .filter((i) => i.folderId === match.params.folderId)}
-                  onAddNote={(note) => setNotes(addNote(note))}
-                />
-              )}
-            />
-          </Switch>
+          {mainRoutes()}
         </main>
       </div>
     </AppContext.Provider>

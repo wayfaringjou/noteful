@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import AppContext from './AppContext';
+import AppContext from '../AppContext';
 
 export default function NoteItem({ note }) {
   const modifiedDate = new Date(note.modified);
@@ -20,7 +20,14 @@ export default function NoteItem({ note }) {
               {modifiedDate.toDateString()}
             </span>
           </p>
-          <button type="button" onClick={() => { onDelNote(note.id); }}>Delete Note</button>
+          <button
+            type="button"
+            onClick={() => {
+              onDelNote(note.id);
+            }}
+          >
+            Delete Note
+          </button>
         </article>
       )}
     </AppContext.Consumer>
