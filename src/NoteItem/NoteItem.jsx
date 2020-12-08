@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AppContext from '../AppContext';
 
-export default function NoteItem({ note }) {
+export default function NoteItem({ note, backOnDelete }) {
   const modifiedDate = new Date(note.modified);
   return (
     <AppContext.Consumer>
@@ -24,6 +24,7 @@ export default function NoteItem({ note }) {
             type="button"
             onClick={() => {
               onDelNote(note.id);
+              backOnDelete();
             }}
           >
             Delete Note
@@ -36,10 +37,12 @@ export default function NoteItem({ note }) {
 
 NoteItem.propTypes = {
   note: PropTypes.objectOf(PropTypes.string),
+  backOnDelete: PropTypes.func,
 };
 
 NoteItem.defaultProps = {
   note: [{
     id: '', name: '', modified: '', folderId: '', content: '',
   }],
+  backOnDelete: () => {},
 };

@@ -7,25 +7,36 @@ export default function FolderList({ selected }) {
   return (
     <AppContext.Consumer>
       {({ folders }) => (
-        <ul className="folder_list">
-          {folders.map((folder) => {
-            const isSelected = folder.id === selected;
-            return (
-              <li className="folder_list__item" key={folder.id}>
-                <Link to={`/folder/${folder.id}`}>
-                  <button
-                    type="button"
-                    className={`folder_button ${isSelected
-                      ? 'selected'
-                      : ''}`}
-                  >
-                    {folder.name}
-                  </button>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        <section className="sidebar__folder_list">
+          <ul className="folder_list__items">
+            {folders.map((folder) => {
+              const isSelected = folder.id === selected;
+              return (
+                <li className="folder_list__item" key={folder.id}>
+                  <Link to={`/folder/${folder.id}`}>
+                    <button
+                      type="button"
+                      className={`folder_button ${isSelected
+                        ? 'selected'
+                        : ''}`}
+                    >
+                      {folder.name}
+                    </button>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+          <section className="sidebar__add_folder">
+            <Link to="/add-folder">
+              <button
+                type="button"
+              >
+                Add Folder
+              </button>
+            </Link>
+          </section>
+        </section>
       )}
     </AppContext.Consumer>
 

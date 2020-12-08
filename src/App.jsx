@@ -4,21 +4,29 @@ import config from './config';
 import Header from './Header';
 import Main from './Main/Main';
 import Sidebar from './Sidebar/Sidebar';
+import AddFolder from './AddFolder/AddFolder';
+import AddNote from './AddNote/AddNote';
 import AppContext from './AppContext';
 
 function App() {
   const [folders, setFolders] = useState([]);
   const [notes, setNotes] = useState([]);
+  const [newFolder, setNewFolder] = useState({ name: '' });
+  const [newNote, setNewNote] = useState({ name: '', content: '', folderId: '' });
   const [errorMsg, setErrorMsg] = useState('');
   const [page, setPage] = useState(1);
 
-  // const addFolder = (folder) => {
-  //  folders.push(folder);
-  // };
-
-  // const addNote = (note) => {
-  //  notes.push(note);
-  // };
+  const addNew = (e, type, data) => {
+    e.preventDefault();
+    fetch(`${config.API_ENDPOINT}/${type}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+      },
+      body: JSON.stringify(data),
+    })
+      .then(setPage(page + 1));
+  };
 
   const delNote = (noteId) => {
     fetch(`${config.API_ENDPOINT}/notes/${noteId}`, {
@@ -64,6 +72,32 @@ function App() {
       <Route exact path="/" component={Main} />
       <Route exact path="/note/:noteId" component={Main} />
       <Route exact path="/folder/:folderId" component={Main} />
+      <Route
+        exact
+        path="/add-folder"
+        render={({ history }) => (
+          <AddFolder
+            newFolder={newFolder}
+            onNameChange={(name) => setNewFolder({ name })}
+            onNewFolderSubmit={(e) => addNew(e, 'folders', newFolder)}
+            handleGoBack={() => history.push('/')}
+            folders={folders}
+          />
+        )}
+      />
+      <Route
+        exact
+        path="/add-note"
+        render={({ history }) => (
+          <AddNote
+            newNote={newNote}
+            onInputChange={(data) => setNewNote(data)}
+            onNewNoteSubmit={(e) => addNew(e, 'notes', newNote)}
+            handleGoBack={() => history.push('/')}
+            folders={folders}
+          />
+        )}
+      />
     </>
   );
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AppContext from '../AppContext';
 import NoteItem from '../NoteItem/NoteItem';
@@ -19,11 +20,22 @@ export default function NoteList({ folderId }) {
   return (
     <AppContext.Consumer>
       {({ notes }) => (
-        <ul className="notes_list">
-          {folderId
-            ? renderList(filterNotes(notes, folderId))
-            : renderList(notes) }
-        </ul>
+        <section className="notes_list">
+          <ul className="notes_list_items">
+            {folderId
+              ? renderList(filterNotes(notes, folderId))
+              : renderList(notes) }
+          </ul>
+          <section className="main__add_note">
+            <Link to="/add-note">
+              <button
+                type="button"
+              >
+                Add note
+              </button>
+            </Link>
+          </section>
+        </section>
       )}
     </AppContext.Consumer>
   );

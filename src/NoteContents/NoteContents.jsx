@@ -6,7 +6,7 @@ import AppContext from '../AppContext';
 
 const matchNote = (notesData, noteItemId) => notesData.find((n) => n.id === noteItemId);
 
-export default function NoteContents({ noteId }) {
+export default function NoteContents({ noteId, backOnDelete }) {
   return (
     <AppContext.Consumer>
       {({ notes }) => (
@@ -14,6 +14,7 @@ export default function NoteContents({ noteId }) {
           <section className="note__header">
             <NoteItem
               note={matchNote(notes, noteId)}
+              backOnDelete={backOnDelete}
             />
           </section>
           <section className="note__content">
@@ -31,4 +32,9 @@ export default function NoteContents({ noteId }) {
 
 NoteContents.propTypes = {
   noteId: PropTypes.string.isRequired,
+  backOnDelete: PropTypes.func,
+};
+
+NoteContents.defaultProps = {
+  backOnDelete: () => {},
 };
