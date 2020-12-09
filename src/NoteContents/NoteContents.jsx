@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import NoteItem from '../NoteItem/NoteItem';
 import AppContext from '../AppContext';
+import './NoteContents.css';
 
 const matchNote = (notesData, noteItemId) => notesData.find((n) => n.id === noteItemId);
 

@@ -1,0 +1,25 @@
+.noteful__app {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.app__header {
+  width: 100vw;
+  height: 20vh;
+  padding: 2em;
+  border-bottom: 1px solid #000;
+  margin: 0 2rem;
+}
+
+.app__sidebar {
+  border-right: 1px solid #000;
+  margin: 2rem 0;
+  padding: 0 2rem;
+  flex: 1 0 auto;
+}
+
+.app__main {
+  margin: 2rem 0;
+  padding: 0 2rem;
+  flex: 8 1 0;
+}

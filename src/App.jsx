@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import config from './config';
-import Header from './Header';
 import Main from './Main/Main';
 import Sidebar from './Sidebar/Sidebar';
 import AddFolder from './AddFolder/AddFolder';
 import AddNote from './AddNote/AddNote';
 import AppContext from './AppContext';
+import './App.css';
 
 function App() {
+  const [errorMsg, setErrorMsg] = useState('');
+  const [page, setPage] = useState(1);
+
   const [folders, setFolders] = useState([]);
   const [notes, setNotes] = useState([]);
   const [newFolder, setNewFolder] = useState({ name: '' });
-  const [newNote, setNewNote] = useState({ name: '', content: '', folderId: '' });
-  const [errorMsg, setErrorMsg] = useState('');
-  const [page, setPage] = useState(1);
+  const [newNote, setNewNote] = useState({
+    name: '', content: '', folderId: '',
+  });
 
   const addNew = (e, type, data) => {
     e.preventDefault();
@@ -25,7 +28,10 @@ function App() {
       },
       body: JSON.stringify(data),
     })
-      .then(setPage(page + 1));
+      .then(setPage(page + 1))
+      .catch((error) => {
+        setErrorMsg(error.message);
+      });
   };
 
   const delNote = (noteId) => {
@@ -35,7 +41,10 @@ function App() {
         'content-type': 'application/json',
       },
     })
-      .then(setPage(page + 1));
+      .then(setPage(page + 1))
+      .catch((error) => {
+        setErrorMsg(error.message);
+      });
   };
 
   const fetchData = (url, options, callback) => {
@@ -50,7 +59,7 @@ function App() {
         callback(data);
       })
       .catch((error) => {
-        setErrorMsg(error);
+        setErrorMsg(error.message);
       });
   };
 
@@ -64,6 +73,8 @@ function App() {
       <Route exact path="/" component={Sidebar} />
       <Route exact path="/note/:noteId" component={Sidebar} />
       <Route exact path="/folder/:folderId" component={Sidebar} />
+      <Route exact path="/add-folder" component={Sidebar} />
+      <Route exact path="/add-note" component={Sidebar} />
     </>
   );
 
@@ -111,14 +122,18 @@ function App() {
     >
       <div className="noteful__app">
         <header className="app__header">
-          <Header />
+          <h1>
+            <Link to="/">
+              Noteful
+            </Link>
+          </h1>
         </header>
         <nav className="app__sidebar">
           {sidebarRoutes()}
         </nav>
         <main className="app__main">
           <section className="error_msg">
-            <h2>{errorMsg}</h2>
+            <h3>{errorMsg}</h3>
           </section>
           {mainRoutes()}
         </main>

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ValidationError from '../ValidationError/ValidationError';
+import './AddFolder.css';
 
 let inputTouched = {};
 
@@ -8,7 +9,8 @@ export default function AddFolder({
   newFolder, onNameChange, handleGoBack, onNewFolderSubmit, folders,
 }) {
   const validateInputs = (newFolderItem, foldersData) => {
-    const { name } = newFolderItem;
+    let { name } = newFolderItem;
+    name = name.trim();
     if (name.length === 0) {
       return 'Name is required';
     } if (foldersData.find((i) => i.name === name)) {
@@ -18,15 +20,18 @@ export default function AddFolder({
   };
   const errors = validateInputs(newFolder, folders);
 
-  useEffect(() => {});
+  let clearPage = false;
+  useEffect(() => {
+    onNameChange('');
+    inputTouched = {};
+  }, [clearPage]);
 
   return (
     <form
       className="add_folder_form"
       onSubmit={(e) => {
         onNewFolderSubmit(e);
-        onNameChange('');
-        inputTouched = {};
+        clearPage = true;
         handleGoBack();
       }}
     >
@@ -34,31 +39,32 @@ export default function AddFolder({
         <legend>
           <h2>Add Folder</h2>
         </legend>
-        {inputTouched.folderName && (<ValidationError message={errors} />)}
-        <label htmlFor="folderName">
-          Folder Name
-          <input
-            className="input_folder_name"
-            type="text"
-            name="folderName"
-            id="folderName"
-            onChange={(e) => {
-              onNameChange(e.target.value);
-              inputTouched[e.target.name] = true;
+        <div className="folder_form_container">
+          <label htmlFor="folderName">
+            Folder Name
+            <input
+              className="input_folder_name"
+              type="text"
+              name="folderName"
+              id="folderName"
+              onChange={(e) => {
+                onNameChange(e.target.value);
+                inputTouched[e.target.name] = true;
+              }}
+            />
+          </label>
+          {inputTouched.folderName && (<ValidationError message={errors} />)}
+          <button type="submit" disabled={errors}>Add New Folder</button>
+          <button
+            type="button"
+            onClick={() => {
+              clearPage = true;
+              handleGoBack();
             }}
-          />
-        </label>
-        <button type="submit" disabled={errors}>Add New Folder</button>
-        <button
-          type="button"
-          onClick={() => {
-            onNameChange('');
-            inputTouched = {};
-            handleGoBack();
-          }}
-        >
-          Cancel
-        </button>
+          >
+            Cancel
+          </button>
+        </div>
       </fieldset>
     </form>
   );

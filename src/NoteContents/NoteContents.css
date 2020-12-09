@@ -1,0 +1,7 @@
+.note__content{
+  margin-top: 1rem;
+}
+
+.note__content > * + * {
+  margin-top: 1rem;
+}

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ValidationError from '../ValidationError/ValidationError';
+import './AddNote.css';
 
 let inputTouched = {};
 
@@ -31,27 +32,34 @@ export default function AddNote({
     return null;
   };
 
-  console.log(newNote);
   const nameErrors = validateName();
   const contentErrors = validateContent();
   const folderIdErrors = validateFolderId();
+
+  let clearPage = false;
+  useEffect(() => {
+    onInputChange({
+      name: '', content: '', folderId: 'none',
+    });
+    inputTouched = {};
+  }, [clearPage]);
 
   return (
     <form
       className="add_note_form"
       onSubmit={(e) => {
         onNewNoteSubmit(e);
-        onInputChange({ name: '', content: '', folderId: '' });
-        inputTouched = {};
+        clearPage = true;
         handleGoBack();
       }}
     >
       <fieldset>
         <legend>
           <h2>Add Note</h2>
-          {inputTouched.noteName && (<ValidationError message={nameErrors} />)}
+        </legend>
+        <div className="note_form_container">
           <label htmlFor="noteName">
-            Note Name
+            <span className="note_form_label">Note Name</span>
             <input
               className="input_note_name"
               type="text"
@@ -63,12 +71,12 @@ export default function AddNote({
               }}
             />
           </label>
-          {inputTouched.noteContent && (<ValidationError message={contentErrors} />)}
+          {inputTouched.noteName && (<ValidationError message={nameErrors} />)}
+
           <label htmlFor="noteContent">
-            Note Content
-            <input
+            <span className="note_form_label">Note Content</span>
+            <textarea
               className="input_note_name"
-              type="text"
               name="noteContent"
               id="noteContent"
               onChange={(e) => {
@@ -77,7 +85,8 @@ export default function AddNote({
               }}
             />
           </label>
-          {inputTouched.noteFolderId && (<ValidationError message={folderIdErrors} />)}
+          {inputTouched.noteContent && (<ValidationError message={contentErrors} />)}
+
           <label htmlFor="noteFolderId">
             <select
               name="noteFolderId"
@@ -90,7 +99,7 @@ export default function AddNote({
               <option value="none">Select a folder</option>
               {folders.map((i) => (
                 <option
-                  value={i.name}
+                  value={i.id}
                   key={i.id}
                 >
                   {i.name}
@@ -98,7 +107,24 @@ export default function AddNote({
               ))}
             </select>
           </label>
-        </legend>
+          {inputTouched.noteFolderId && (<ValidationError message={folderIdErrors} />)}
+
+          <button
+            type="submit"
+            disabled={nameErrors || contentErrors || folderIdErrors}
+          >
+            Add New Note
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              clearPage = true;
+              handleGoBack();
+            }}
+          >
+            Cancel
+          </button>
+        </div>
       </fieldset>
     </form>
   );
@@ -117,7 +143,7 @@ AddNote.defaultProps = {
   newNote: {
     name: '',
     content: '',
-    folderId: '',
+    folderId: 'none',
   },
   folders: [],
 };

@@ -1,0 +1,18 @@
+.notes_list_items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.notes_list_items > * + * {
+  margin-top: 1rem;
+}
+
+.main__add_note {
+  margin-top: 1rem;
+}
+
+.main__add_note button {
+  padding: 1rem;
+}

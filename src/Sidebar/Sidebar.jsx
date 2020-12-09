@@ -3,6 +3,7 @@ import React from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import FolderList from '../FolderList/FolderList';
 import NoteSidebar from '../NoteSidebar/NoteSidebar';
+import AppError from '../AppError';
 
 export default function Sidebar() {
   const { noteId, folderId } = useParams();
@@ -11,12 +12,18 @@ export default function Sidebar() {
     <section className="sidebar">
       {noteId
         ? (
-          <NoteSidebar
-            noteId={noteId}
-            onClickBack={() => history.push('/')}
-          />
+          <AppError>
+            <NoteSidebar
+              noteId={noteId}
+              onClickBack={() => history.push('/')}
+            />
+          </AppError>
         )
-        : <FolderList folderId={folderId} />}
+        : (
+          <AppError>
+            <FolderList folderId={folderId} />
+          </AppError>
+        )}
     </section>
   );
 }

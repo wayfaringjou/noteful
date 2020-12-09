@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AppContext from '../AppContext';
 import NoteItem from '../NoteItem/NoteItem';
+import './NoteList.css';
 
 const filterNotes = (notesData, folderItemId) => (
   notesData.filter((i) => i.folderId === folderItemId)

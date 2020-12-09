@@ -1,0 +1,22 @@
+.note__item {
+  border: 1px solid #000;
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  padding: 1rem;
+}
+
+.note__item__title {
+  flex: 8 0 auto;
+}
+
+.note__item__delete {
+  flex: 1 0 auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.note__item__delete button {
+  padding: 0.5rem;
+}

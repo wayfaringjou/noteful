@@ -1,0 +1,26 @@
+.folder_list__items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.folder_list__items > * + * {
+  margin-top: 1rem;
+}
+
+.folder_list__item button {
+  padding: 1rem;
+  width: 100%;
+}
+
+.sidebar__add_folder {
+  margin-top: 1rem;
+}
+
+.sidebar__add_folder button {
+  width: 100%;
+}
+
+.selected {
+  background-color: #87cefa;
+}
