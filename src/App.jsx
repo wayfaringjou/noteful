@@ -16,35 +16,39 @@ function App() {
   const [notes, setNotes] = useState([]);
   const [newFolder, setNewFolder] = useState({ name: '' });
   const [newNote, setNewNote] = useState({
-    name: '', content: '', folderId: '',
+    name: '', content: '', folderId: 0,
   });
 
-  const addNew = (e, type, data) => {
-    e.preventDefault();
-    fetch(`${config.API_ENDPOINT}/${type}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-      },
-      body: JSON.stringify(data),
-    })
-      .then(setPage(page + 1))
-      .catch((error) => {
-        setErrorMsg(error.message);
+  const addNew = async (e, type, data) => {
+    try {
+      e.preventDefault();
+      await fetch(`${config.API_ENDPOINT}/${type}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+          Authorization: `Bearer ${config.API_KEY}`,
+        },
+        body: JSON.stringify(data),
       });
+      setPage(page + 1);
+    } catch (error) {
+      setErrorMsg(error.message);
+    }
   };
 
-  const delNote = (noteId) => {
-    fetch(`${config.API_ENDPOINT}/notes/${noteId}`, {
-      method: 'DELETE',
-      headers: {
-        'content-type': 'application/json',
-      },
-    })
-      .then(setPage(page + 1))
-      .catch((error) => {
-        setErrorMsg(error.message);
+  const delNote = async (noteId) => {
+    try {
+      await fetch(`${config.API_ENDPOINT}/notes/${noteId}`, {
+        method: 'DELETE',
+        headers: {
+          'content-type': 'application/json',
+          Authorization: `Bearer ${config.API_KEY}`,
+        },
       });
+      setPage(page + 1);
+    } catch (error) {
+      setErrorMsg(error.message);
+    }
   };
 
   const fetchData = (url, options, callback) => {
@@ -64,8 +68,18 @@ function App() {
   };
 
   useEffect(() => {
-    fetchData(`${config.API_ENDPOINT}/folders`, { method: 'GET' }, setFolders);
-    fetchData(`${config.API_ENDPOINT}/notes`, { method: 'GET' }, setNotes);
+    fetchData(`${config.API_ENDPOINT}/folders`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${config.API_KEY}`,
+      },
+    }, setFolders);
+    fetchData(`${config.API_ENDPOINT}/notes`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${config.API_KEY}`,
+      },
+    }, setNotes);
   }, [page]);
 
   const sidebarRoutes = () => (

@@ -12,8 +12,8 @@ export default function Main() {
   return (
     <section className="main__notes">
       {noteId
-        ? <AppError><NoteContents noteId={noteId} backOnDelete={() => history.push('/')} /></AppError>
-        : <AppError><NoteList folderId={folderId} /></AppError>}
+        ? <AppError><NoteContents noteId={parseInt(noteId, 10)} backOnDelete={() => history.push('/')} /></AppError>
+        : <AppError><NoteList folderId={parseInt(folderId, 10)} /></AppError>}
     </section>
   );
 }

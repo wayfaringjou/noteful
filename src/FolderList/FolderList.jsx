@@ -11,7 +11,7 @@ export default function FolderList({ folderId }) {
         <section className="sidebar__folder_list">
           <ul className="folder_list__items">
             {folders.map((folder) => {
-              const isSelected = folder.id === folderId;
+              const isSelected = folder.id === parseInt(folderId, 10);
               return (
                 <li className="folder_list__item" key={folder.id}>
                   <Link to={`/folder/${folder.id}`}>
@@ -45,9 +45,9 @@ export default function FolderList({ folderId }) {
 }
 
 FolderList.propTypes = {
-  folderId: PropTypes.string,
+  folderId: PropTypes.number,
 };
 
 FolderList.defaultProps = {
-  folderId: '',
+  folderId: 0,
 };

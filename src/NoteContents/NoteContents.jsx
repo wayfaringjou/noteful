@@ -5,7 +5,8 @@ import NoteItem from '../NoteItem/NoteItem';
 import AppContext from '../AppContext';
 import './NoteContents.css';
 
-const matchNote = (notesData, noteItemId) => notesData.find((n) => n.id === noteItemId);
+const matchNote = (notesData, noteItemId) => notesData
+  .find((n) => n.id === parseInt(noteItemId, 10));
 
 export default function NoteContents({ noteId, backOnDelete }) {
   return (
@@ -32,7 +33,7 @@ export default function NoteContents({ noteId, backOnDelete }) {
 }
 
 NoteContents.propTypes = {
-  noteId: PropTypes.string.isRequired,
+  noteId: PropTypes.number.isRequired,
   backOnDelete: PropTypes.func,
 };
 

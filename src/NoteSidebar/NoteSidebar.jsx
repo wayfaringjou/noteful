@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import AppContext from '../AppContext';
 
 const getFolderName = (notesData, foldersData, noteItemId) => {
-  const folderItemId = notesData.find((n) => n.id === noteItemId).folderId;
+  const folderItemId = notesData.find((n) => n.id === parseInt(noteItemId, 10)).folderId;
   return foldersData.find((f) => f.id === folderItemId).name;
 };
 
@@ -25,6 +25,6 @@ export default function NoteSidebar({ noteId, onClickBack }) {
 }
 
 NoteSidebar.propTypes = {
-  noteId: PropTypes.string.isRequired,
+  noteId: PropTypes.number.isRequired,
   onClickBack: PropTypes.func.isRequired,
 };

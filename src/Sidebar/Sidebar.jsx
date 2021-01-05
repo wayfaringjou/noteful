@@ -14,14 +14,14 @@ export default function Sidebar() {
         ? (
           <AppError>
             <NoteSidebar
-              noteId={noteId}
+              noteId={parseInt(noteId, 10)}
               onClickBack={() => history.push('/')}
             />
           </AppError>
         )
         : (
           <AppError>
-            <FolderList folderId={folderId} />
+            <FolderList folderId={parseInt(folderId, 10)} />
           </AppError>
         )}
     </section>

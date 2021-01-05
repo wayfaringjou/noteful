@@ -12,7 +12,7 @@ export default function NoteItem({ note, backOnDelete }) {
         <article className="note__item">
           <section className="note__item__title">
             <h2>
-              <Link to={`/note/${note.id}`}>
+              <Link to={`/note/${parseInt(note.id, 10)}`}>
                 {note.name}
               </Link>
             </h2>
@@ -27,7 +27,7 @@ export default function NoteItem({ note, backOnDelete }) {
             <button
               type="button"
               onClick={() => {
-                onDelNote(note.id);
+                onDelNote(parseInt(note.id, 10));
                 backOnDelete();
               }}
             >
@@ -41,13 +41,19 @@ export default function NoteItem({ note, backOnDelete }) {
 }
 
 NoteItem.propTypes = {
-  note: PropTypes.objectOf(PropTypes.string),
+  note: PropTypes.shape({
+    name: PropTypes.string,
+    id: PropTypes.number,
+    modified: PropTypes.string,
+    folderId: PropTypes.number,
+    content: PropTypes.string,
+  }),
   backOnDelete: PropTypes.func,
 };
 
 NoteItem.defaultProps = {
   note: [{
-    id: '', name: '', modified: '', folderId: '', content: '',
+    id: '', name: '', modified: '', folderId: 0, content: '',
   }],
   backOnDelete: () => {},
 };

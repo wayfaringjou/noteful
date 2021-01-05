@@ -6,12 +6,12 @@ import NoteItem from '../NoteItem/NoteItem';
 import './NoteList.css';
 
 const filterNotes = (notesData, folderItemId) => (
-  notesData.filter((i) => i.folderId === folderItemId)
+  notesData.filter((i) => i.folderId === parseInt(folderItemId, 10))
 );
 
 const renderList = (notes) => (
   notes.map((note) => (
-    <li className="notes_list__item" key={note.id}>
+    <li className="notes_list__item" key={parseInt(note.id, 10)}>
       <NoteItem note={note} />
     </li>
   ))
@@ -43,9 +43,9 @@ export default function NoteList({ folderId }) {
 }
 
 NoteList.propTypes = {
-  folderId: PropTypes.string,
+  folderId: PropTypes.number,
 };
 
 NoteList.defaultProps = {
-  folderId: '',
+  folderId: 0,
 };

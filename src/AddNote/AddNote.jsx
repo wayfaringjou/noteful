@@ -26,7 +26,7 @@ export default function AddNote({
 
   const validateFolderId = () => {
     const { folderId } = newNote;
-    if (folderId === 'none') {
+    if (folderId === 0) {
       return 'The note has to be assigned to a folder';
     }
     return null;
@@ -39,7 +39,7 @@ export default function AddNote({
   let clearPage = false;
   useEffect(() => {
     onInputChange({
-      name: '', content: '', folderId: 'none',
+      name: '', content: '', folderId: 0,
     });
     inputTouched = {};
   }, [clearPage]);
@@ -92,11 +92,11 @@ export default function AddNote({
               name="noteFolderId"
               id="noteFolderId"
               onChange={(e) => {
-                onInputChange({ ...newNote, folderId: e.target.value });
+                onInputChange({ ...newNote, folderId: parseInt(e.target.value, 10) });
                 inputTouched[e.target.name] = true;
               }}
             >
-              <option value="none">Select a folder</option>
+              <option value={0}>Select a folder</option>
               {folders.map((i) => (
                 <option
                   value={i.id}
@@ -131,7 +131,12 @@ export default function AddNote({
 }
 
 AddNote.propTypes = {
-  newNote: PropTypes.objectOf(PropTypes.string),
+  newNote: PropTypes.shape({
+    name: PropTypes.string,
+    id: PropTypes.number,
+    folderId: PropTypes.number,
+    content: PropTypes.string,
+  }),
   onInputChange: PropTypes.func.isRequired,
   onNewNoteSubmit: PropTypes.func.isRequired,
   handleGoBack: PropTypes.func,
@@ -143,7 +148,7 @@ AddNote.defaultProps = {
   newNote: {
     name: '',
     content: '',
-    folderId: 'none',
+    folderId: 0,
   },
   folders: [],
 };
